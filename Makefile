@@ -8,6 +8,9 @@ export OS_KERNEL_CONFIG_ROOT := ${OS_KERNEL_CONTAINER_ROOT}/config
 
 export LOADADDR=0x80008000
 
+.PHONY: all
+all: container_submodule_init kernel_standard_uimage kernel_standard_dtb kernel_standard_modules
+
 .PHONY: kernel_standard_uimage
 kernel_standard_uimage: kernel_standard_defconfig
 	make -j 4 -C ${OS_KERNEL_ROOT} uImage
@@ -27,6 +30,10 @@ kernel_standard_modules: kernel_standard_defconfig
 kernel_standard_mrproper: check_env
 	make -C ${OS_KERNEL_ROOT} mrproper
 
+.PHONY: kernel_xconfig
+kernel_xconfig:
+	@ make -C ${OS_KERNEL_ROOT} xconfig
+
 .PHONY: kernel_standard_defconfig
 kernel_standard_defconfig: check_env
 	@ if [ -f ${OS_KERNEL_ROOT}/.config ]; \
@@ -44,6 +51,10 @@ kernel_standard_save_defconfig: check_env
 .PHONY: kernel_deploy_clean
 kernel_deploy_clean:
 	rm -rf ${OS_KERNEL_DEPLOY_ROOT}/*
+
+.PHONY: container_submodule_init
+container_submodule_init:
+	@ git submodule update --init
 
 .PHONY: check_env
 check_env:
