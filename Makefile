@@ -8,7 +8,7 @@ export OS_KERNEL_DEPLOY_ROOT := ${OS_KERNEL_CONTAINER_ROOT}/deploy
 export OS_KERNEL_CONFIG_ROOT := ${OS_KERNEL_CONTAINER_ROOT}/config
 export OS_KERNEL_SCRIPTS_ROOT := ${OS_KERNEL_CONTAINER_ROOT}/bin
 
-export LOADADDR=0x80008000
+export LOADADDR=0x08008000
 
 .PHONY: all
 all: container_submodule_init kernel_standard_uimage kernel_standard_dtb kernel_standard_modules
