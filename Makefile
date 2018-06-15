@@ -34,7 +34,7 @@ kernel_standard_mrproper: check_env check_env
 
 .PHONY: kernel_xconfig
 kernel_xconfig:
-	@ make -C ${OS_KERNEL_ROOT} xconfig
+	@ make -C ${OS_KERNEL_ROOT} ARCH=arm xconfig
 
 .PHONY: kernel_standard_defconfig
 kernel_standard_defconfig: check_env
@@ -47,7 +47,7 @@ kernel_standard_defconfig: check_env
           fi;
 
 .PHONY: kernel_standard_save_defconfig
-kernel_standard_save_defconfig: check_env
+kernel_standard_save_defconfig: 
 	cp -p ${OS_KERNEL_ROOT}/.config ${OS_KERNEL_CONFIG_ROOT}/kernel_standard_config
 
 .PHONY: kernel_deploy_clean
