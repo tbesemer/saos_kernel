@@ -11,17 +11,25 @@ export OS_KERNEL_SCRIPTS_ROOT := ${OS_KERNEL_CONTAINER_ROOT}/bin
 export LOADADDR=0x08008000
 
 .PHONY: all
-all: container_submodule_init kernel_standard_uimage kernel_standard_dtb kernel_standard_modules
+all: container_submodule_init kernel_standard_uimage kernel_standard_zimage kernel_standard_dtb kernel_standard_modules
 
 .PHONY: kernel_standard_uimage
 kernel_standard_uimage: check_env kernel_standard_defconfig
 	make -j 4 -C ${OS_KERNEL_ROOT} uImage
 	cp -p ${OS_KERNEL_ROOT}/arch/arm/boot/uImage ${OS_KERNEL_DEPLOY_ROOT}/${OS_MACHINE}-uImage
 
+.PHONY: kernel_standard_zimage
+kernel_standard_zimage: check_env kernel_standard_defconfig
+	make -j 4 -C ${OS_KERNEL_ROOT} zImage
+	cp -p ${OS_KERNEL_ROOT}/arch/arm/boot/zImage ${OS_KERNEL_DEPLOY_ROOT}/${OS_MACHINE}-zImage
+	ln -s ${OS_KERNEL_DEPLOY_ROOT}/${OS_MACHINE}-zImage ${OS_KERNEL_DEPLOY_ROOT}/zImage
+
+
 .PHONY: kernel_standard_dtb
 kernel_standard_dtb: check_env kernel_standard_defconfig
 	make -j 4 -C ${OS_KERNEL_ROOT} ${OS_MACHINE}.dtb
 	cp -p ${OS_KERNEL_ROOT}/arch/arm/boot/dts/${OS_MACHINE}.dtb ${OS_KERNEL_DEPLOY_ROOT}/${OS_MACHINE}.dtb
+	ln -s ${OS_KERNEL_DEPLOY_ROOT}/${OS_MACHINE}.dtb ${OS_KERNEL_DEPLOY_ROOT}/zImage.dtb
 
 .PHONY: kernel_standard_modules
 kernel_standard_modules: check_env kernel_standard_defconfig
